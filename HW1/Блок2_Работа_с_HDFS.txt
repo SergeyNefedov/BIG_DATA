@@ -1,0 +1,54 @@
+1. Создайте папку в корневой HDFS-папке
+hdfs dfs -mkdir /nefedov
+
+2. Создайте в созданной папке новую вложенную папку
+hdfs dfs -mkdir -p /nefedov/hw1
+
+3.
+Вопрос: Что такое Trash в распределенной FS? 
+Ответ: Это папка, куда попадают файлы при удалении. Помогает в том случае, если файл был удален случайно.
+
+Вопрос: Как сделать так, чтобы файлы удалялись сразу, минуя “Trash”?
+Ответ: Нужно вызвать -rm с флагом -skipTrash
+
+4. Создайте пустой файл в подпапке из пункта 2
+hdfs dfs -touchz /nefedov/hw1/file
+
+5. Удалите созданный файл
+hdfs dfs -rm -skipTrash /nefedov/hw1/file
+
+6. Удалите созданные папки
+hdfs dfs -rm -r -skipTrash /nefedov
+
+
+1. Скопируйте любой файл в новую папку на HDFS
+hdfs dfs -mkdir /nefedov
+hdfs dfs -put file.txt /nefedov/file.txt
+
+2. Выведите содержимое HDFS-файла на экран
+hdfs dfs -cat /file.txt 
+
+3. Выведите содержимое нескольких последних строчек HDFS-файла на экран
+hdfs dfs -cat /file.txt | tail -n 3
+
+4. Выведите содержимое нескольких первых строчек HDFS-файла на экран
+hdfs dfs -cat /file.txt | head -n 3
+
+5. Переместите копию файла в HDFS на новую локацию
+hdfs dfs -mkdir /new
+hdfs dfs -cp /file.txt /new/file.txt
+
+
+1. Изменить replication factor для файла. Как долго занимает время на увеличение / уменьшение числа реплик для файла?
+
+hdfs dfs -setrep -w 2 /file.txt
+hdfs dfs -setrep -w 3 /file.txt
+По времени меньше минуты
+
+2. Найдите информацию по файлу, блокам и их расположениям с помощью "hdfs fsck"
+hdfs fsck /file.txt -files -blocks -locations
+
+3. Получите информацию по любому блоку из п.2 с помощью "hdfs fsck -blockId”.
+Обратите внимание на Generation Stamp (GS number).
+
+hdfs fsck -blockId blk_1073741839
